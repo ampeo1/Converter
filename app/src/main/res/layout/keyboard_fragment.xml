@@ -16,7 +16,7 @@
         <Button android:id="@+id/button7" style="@style/KeyboardButton" android:text="7"/>
         <Button android:id="@+id/button8" style="@style/KeyboardButton" android:text="8"/>
         <Button android:id="@+id/button9" style="@style/KeyboardButton" android:text="9"/>
-        <Button android:id="@+id/button." style="@style/KeyboardButton" android:text="."/>
+        <Button android:id="@+id/buttonDot" style="@style/KeyboardButton" android:text="."/>
         <Button android:id="@+id/button0" style="@style/KeyboardButton" android:text="0"/>
         <Button android:id="@+id/buttonDel" style="@style/KeyboardButton" android:text="C"/>
     </GridLayout>

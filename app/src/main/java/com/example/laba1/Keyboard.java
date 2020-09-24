@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +23,7 @@ public class Keyboard extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.keyboard_fragment, container, false);
+        mViewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel.class);
         Button button = (Button) view.findViewById(R.id.button1);
         button.setOnClickListener(this);
         button = (Button) view.findViewById(R.id.button2);
@@ -44,13 +44,16 @@ public class Keyboard extends Fragment implements View.OnClickListener {
         button.setOnClickListener(this);
         button = (Button) view.findViewById(R.id.button0);
         button.setOnClickListener(this);
+        button = (Button) view.findViewById(R.id.buttonDel);
+        button.setOnClickListener(item -> mViewModel.getInputData().setValue(""));
+        button = (Button) view.findViewById(R.id.buttonDot);
+        button.setOnClickListener(dotKey);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         // TODO: Use the ViewModel
     }
 
@@ -58,7 +61,15 @@ public class Keyboard extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         Button btn = (Button)view;
         mViewModel.getInputData().setValue(mViewModel.getInputData().getValue() + btn.getText());
-        Toast toast = Toast.makeText(view.getContext(), btn.getText(), Toast.LENGTH_SHORT);
-        toast.show();
     }
+
+    private View.OnClickListener dotKey = new View.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            String input = mViewModel.getInputData().getValue();
+            if(!input.contains(".") && !input.equals("")){
+                mViewModel.getInputData().setValue(mViewModel.getInputData().getValue() + ".");
+            }
+        }
+    };
 }

@@ -1,5 +1,7 @@
 package com.example.laba1;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 
 public class  Fields extends Fragment {
 
+    //ClipboardManager clipboard;
     MainViewModel mainViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class  Fields extends Fragment {
             @Override
             public void onChanged(String newInput) {
                 edit.setText(newInput);
-                outputField.setText(Converter.convert(newInput, mainViewModel.getInputSpinner().getValue(), mainViewModel.getOutputSpinner().getValue()));
+                outputField.setText(mainViewModel.convert(newInput));
             }
         };
 
@@ -57,8 +60,20 @@ public class  Fields extends Fragment {
             }
         };
 
+        final Observer<Unit> outputSpinnerObserver = new Observer<Unit>(){
+            @Override
+            public void onChanged(Unit newOutput){
+                outputField.setText(mainViewModel.convert(newOutput));
+            }
+        };
+
         mainViewModel.getInputData().observe(getViewLifecycleOwner(), inputObserver);
         mainViewModel.getInputSpinner().observe(getViewLifecycleOwner(), inputSpinnerObserver);
+        mainViewModel.getOutputSpinner().observe(getViewLifecycleOwner(), outputSpinnerObserver);
+
+        clipboard = (ClipboardManager)getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        //layout.findViewById(R.id.coppyInput).setOnClickListener(item -> mainViewModel.coppy(TypeCoppy.INPUT, clipboard));
+        //layout.findViewById(R.id.coppyOutput).setOnClickListener(item -> mainViewModel.coppy(TypeCoppy.OUTPUT, clipboard));
         return layout;
     }
 
